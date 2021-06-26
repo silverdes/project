@@ -1,3 +1,11 @@
+/* eslint-disable max-len */
+/* eslint-disable max-len */
+/* eslint-disable max-len */
+/* eslint-disable max-len */
+/* eslint-disable max-len */
+/* eslint-disable max-len */
+/* eslint-disable max-len */
+/* eslint-disable max-len */
 <template>
     <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center sm:pt-0">
         <div v-if="canLogin" class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
@@ -99,7 +107,7 @@
                 </div>
             </div>
         </div>
-    </div>   
+    </div>
 </template>
 
 <style scoped>
@@ -167,14 +175,14 @@
 </style>
 
 <script>
-    export default {
-        components:{
-        },
-        props: {
-            canLogin: Boolean,
-            canRegister: Boolean,
-            laravelVersion: String,
-            phpVersion: String,
-        }
-    }
+export default {
+  components: {
+  },
+  props: {
+    canLogin: Boolean,
+    canRegister: Boolean,
+    laravelVersion: String,
+    phpVersion: String,
+  },
+};
 </script>

@@ -8,7 +8,6 @@
                 <inertia-link
                     class="float-right"
                     :href="route('users.create')"
-                    v-if="$attrs.auth.can.create_articles"
                 >
                     <jet-button>
                         <div class="flex items-center space-x-1">
@@ -223,9 +222,6 @@
                                                             bg-green-100
                                                             text-green-800
                                                         "
-                                                        v-if="
-                                                            user.status == '1'
-                                                        "
                                                         >Active</span
                                                     >
                                                     <span
@@ -239,7 +235,6 @@
                                                             bg-red-100
                                                             text-red-600
                                                         "
-                                                        v-else
                                                         >Pending</span
                                                     >
                                                 </td>
@@ -251,11 +246,8 @@
                                                         text-sm text-gray-500
                                                     "
                                                 >
-                                                    <span
-                                                        v-if="user.role == '1'"
-                                                        >Admin</span
-                                                    >
-                                                    <span v-else>User</span>
+                                                    <span>Admin</span>
+                                                    <span>User</span>
                                                 </td>
                                                 <td
                                                     class="
@@ -295,10 +287,6 @@
                                                         </inertia-link>
 
                                                         <inertia-link
-                                                            v-if="
-                                                                $attrs.auth.can
-                                                                    .create_articles
-                                                            "
                                                             :href="
                                                                 route(
                                                                     'users.edit',
@@ -337,6 +325,7 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 import JetButton from "@/Jetstream/Button";
 export default {
     components: { AppLayout, JetButton },
+    props:{users:Object}
 };
 </script>
 

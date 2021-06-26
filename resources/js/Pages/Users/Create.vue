@@ -1,0 +1,112 @@
+<template>
+<app-layout>
+    <template #header>
+            <h2 class="font-semibold text-gray-800 leading-tight mb-5">
+                Welcome
+                <span class="text-green-400 text-lg font-semibold"> {{ $attrs.user.name }} </span>
+            </h2>
+        </template>
+        <div class="my-4">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-5">
+                    <jet-form-section @submitted="createNewUser">
+                            <template #title>
+                                Profile Information
+                            </template>
+
+                            <template #description>
+                                Update your account's profile information and email address.
+                            </template>
+
+                            <template #form>
+                            
+                                <!-- Name -->
+                                <div class="col-span-6 sm:col-span-4">
+                                    <jet-label for="name" value="Name" />
+                                    <jet-input id="name" type="text" class="mt-1 block w-full" v-model="form.name" autocomplete="name" />
+                                    <jet-input-error v-if="form.errors.name" :message="form.errors.name" class="mt-2" />
+                                </div>
+
+                                <!-- Email -->
+                                <div class="col-span-6 sm:col-span-4">
+                                    <jet-label for="email" value="Email" />
+                                    <jet-input @focus="deleteErrors" id="email" type="email" class="mt-1 block w-full" v-model="form.email" />
+                                    <jet-input-error :message="form.errors.email" class="mt-2" />
+                                </div>
+
+                                <!-- Password -->
+                                <div class="col-span-6 sm:col-span-4">
+                                    <jet-label for="email" value="Enter a Password" />
+                                    <jet-input id="password" type="password" class="mt-1 block w-full" v-model="form.password" />
+                                    <jet-input-error :message="form.errors.password" class="mt-2" />
+                                </div>
+                            </template>
+
+                            <template #actions>
+                                <jet-action-message :on="form.recentlySuccessful" class="mr-3">
+                                    Saved.
+                                </jet-action-message>
+
+                                <jet-button :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                                    Save
+                                </jet-button>
+                            </template>
+                    </jet-form-section>
+                </div>
+            </div>
+        </div>
+        
+</app-layout>
+</template>
+
+<script>
+
+ import JetButton from '@/Jetstream/Button'
+    import JetFormSection from '@/Jetstream/FormSection'
+    import JetInput from '@/Jetstream/Input'
+    import JetInputError from '@/Jetstream/InputError'
+    import JetLabel from '@/Jetstream/Label'
+    import JetActionMessage from '@/Jetstream/ActionMessage'
+    import JetSecondaryButton from '@/Jetstream/SecondaryButton'
+import AppLayout from '@/Layouts/AppLayout.vue'
+    export default {
+        props:{errors: Object},
+        components: {
+            JetActionMessage,
+            JetButton,
+            JetFormSection,
+            JetInput,
+            JetInputError,
+            JetLabel,
+            JetSecondaryButton,
+            AppLayout,
+        },
+         data() {
+            return {
+                form: this.$inertia.form({
+                    _method: 'POST',
+                    name: null,
+                    email: null,
+                    password: null,
+                }),
+            }
+        },
+        methods:{
+            createNewUser(){
+                this.form.post(route('users.store'), {
+                    preserveScroll: true,
+                    //onBefore: () => confirm('Are you sure you want to delete this user?'),
+                    onSuccess: () => {
+                        this.form.name = null;
+                        this.form.email = null;
+                        this.form.password = null;
+                    },
+                });
+            },
+        }
+}
+</script>
+
+<style>
+
+</style>
