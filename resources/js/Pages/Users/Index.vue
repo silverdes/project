@@ -8,6 +8,7 @@
                 <inertia-link
                     class="float-right"
                     :href="route('users.create')"
+                    v-if="$attrs.user.is_admin == true"
                 >
                     <jet-button>
                         <div class="flex items-center space-x-1">
@@ -123,8 +124,8 @@
                                             "
                                         >
                                             <tr
-                                                v-for="user in users"
-                                                :key="user.id"
+                                                v-for="eachUser in allUsers"
+                                                :key="eachUser.id"
                                             >
                                                 <td
                                                     class="
@@ -153,7 +154,7 @@
                                                                     rounded-full
                                                                 "
                                                                 :src="
-                                                                    user.profile_photo_url
+                                                                    eachUser.profile_photo_url
                                                                 "
                                                                 alt=""
                                                             />
@@ -166,7 +167,7 @@
                                                                     text-gray-900
                                                                 "
                                                             >
-                                                                {{ user.name }}
+                                                                {{ eachUser.name }}
                                                             </div>
                                                             <div
                                                                 class="
@@ -174,7 +175,7 @@
                                                                     text-gray-500
                                                                 "
                                                             >
-                                                                {{ user.email }}
+                                                                {{ eachUser.email }}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -193,7 +194,7 @@
                                                             font-semibold
                                                         "
                                                     >
-                                                        {{ user.title }}
+                                                        {{ eachUser.title }}
                                                     </div>
                                                     <div
                                                         class="
@@ -201,7 +202,7 @@
                                                             text-gray-500
                                                         "
                                                     >
-                                                        {{ user.sub_title }}
+                                                        {{ eachUser.sub_title }}
                                                     </div>
                                                 </td>
                                                 <td
@@ -270,7 +271,7 @@
                                                             :href="
                                                                 route(
                                                                     'users.show',
-                                                                    user.id
+                                                                    eachUser.id
                                                                 )
                                                             "
                                                             class="
@@ -287,10 +288,11 @@
                                                         </inertia-link>
 
                                                         <inertia-link
+                                                        v-if="$attrs.can.editprofile || eachUser.id == $attrs.user.id"
                                                             :href="
                                                                 route(
                                                                     'users.edit',
-                                                                    user.id
+                                                                    eachUser.id
                                                                 )
                                                             "
                                                             class="
@@ -325,7 +327,7 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 import JetButton from "@/Jetstream/Button";
 export default {
     components: { AppLayout, JetButton },
-    props:{users:Object}
+    props:{allUsers:Object}
 };
 </script>
 

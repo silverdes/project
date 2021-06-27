@@ -2,8 +2,12 @@
 
 namespace App\Http\Middleware;
 
-use Illuminate\Http\Request;
+use App\Models\Estate;
 use Inertia\Middleware;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -36,8 +40,17 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request)
     {
+        // if(Auth::check()){
+        //     $user = Auth::user()->only(['name', 'id', 'is_admin']);
+        // }else{
+        //     $user = "";
+        // }
+        $user = auth()->user();
         return array_merge(parent::share($request), [
             //
+            'can' => [
+                'editprofile' => $user->can('editprofile')
+            ],
         ]);
     }
 }

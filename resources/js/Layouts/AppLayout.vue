@@ -20,7 +20,7 @@
                                 <jet-nav-link :href="route('dashboard')" :active="route().current('dashboard')">
                                     Dashboard
                                 </jet-nav-link>
-                                <jet-nav-link :href="route('users.index')" :active="route().current('users.*')">
+                                <jet-nav-link v-if="$page.props.user.is_admin" :href="route('users.index')" :active="route().current('users.*')">
                                     Users
                                 </jet-nav-link>
                             </div>
@@ -117,7 +117,7 @@
 
                                         <div class="border-t border-gray-100"></div>
 
-                                        <!-- Authentication -->
+                                        <!--entication -->
                                         <form @submit.prevent="logout">
                                             <jet-dropdown-link as="button">
                                                 Log Out
@@ -170,7 +170,7 @@
                                 API Tokens
                             </jet-responsive-nav-link>
 
-                            <!-- Authentication -->
+                            <!--entication -->
                             <form method="POST" @submit.prevent="logout">
                                 <jet-responsive-nav-link as="button">
                                     Log Out

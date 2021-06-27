@@ -17,8 +17,9 @@ class UserController extends Controller
     public function index()
     {
         //
+        $this->authorize('viewAny', User::class);
         return Inertia::render('Users/Index',[
-            'users' => User::all()
+            'allUsers' => User::all()
         ]);
     }
 
@@ -29,6 +30,7 @@ class UserController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', User::class);
         return Inertia::render('Users/Create');
     }
 
@@ -40,6 +42,8 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', User::class);
+
         $request->validate([
             'name' => 'required|unique:users',
             'email' => 'required|unique:users|email',
@@ -66,7 +70,9 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        return Inertia::render('Users/Show',[
+            'user' => $user
+        ]);
     }
 
     /**
@@ -77,7 +83,9 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return Inertia::render('Users/Edit');
+        $this->authorize('update', $user);
+
+        return Inertia::render('Users/Edit', compact("user"));
     }
 
     /**
@@ -89,7 +97,32 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $this->authorize('update', $user);
+
+        $request->validate([
+            'name' => 'required | min:3',
+            'email' => 'sometimes|email|required',
+            'password' => 'sometimes',
+        ],[
+            'name.required'=>'Title should not be empty',
+            'name.min' => 'The name must be bigger :min characters',
+            'email.email' => 'Should be a valid email',
+        ]);
+
+        if($request->input('password')!==null){
+            $hashed_password = Hash::make($request->input('password'));
+            $user->update($request->all([
+            'name',
+            'email',
+            $hashed_password]
+        ));
+        }else{
+            $user->update($request->all([
+                'name',
+                'email',
+                ]));
+        }
+        return back();
     }
 
     /**
@@ -101,5 +134,7 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         //
+        $this->authorize('delete', $user);
+
     }
 }
